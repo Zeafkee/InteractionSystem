@@ -8,8 +8,8 @@
 |-------|-------|
 | Unity Versiyonu | 2022.3.x |
 | Render Pipeline | URP |
-| Case Süresi | Başlangıç aşaması |
-| Tamamlanma Oranı | %5 |
+| Case Süresi | Geliştirme aşaması |
+| Tamamlanma Oranı | %15 |
 
 ---
 
@@ -21,13 +21,13 @@
 
 ## Durum
 
-Şu an proje iskeleti Ludu Arts standartlarına göre oluşturulmuştur.
-- Klasör yapısı (`Core`, `Interactables`, `Player`, `UI` vb.) hazırlandı.
-- Dokümantasyon dosyaları `Docs/` klasörüne taşındı.
-- Henüz script implementasyonları yapılmamıştır.
+Proje iskeleti oluşturuldu ve temel etkileşim sınıfları implement edildi.
+- **Core:** `IInteractable`, `InteractionType` ve base sınıflar (`BaseInteractable`, `InstantInteractable`, `HoldInteractable`, `ToggleInteractable`) yazıldı.
+- **Standartlar:** Tüm sınıflar Ludu Arts kodlama standartlarına (XML Docs, PascalCase, Namespace) uygun hazırlandı.
 
-## Ludu Arts Standartlarına Uyum
+## Sırada Ne Var?
 
-- Klasör yapısı ve isimlendirmeler `CASE_Unity_Interaction_System.md` dokümanına uygun olarak hazırlanmıştır.
+- `InteractionDetector` (Player raycast sistemi)
+- Concrete Interactables (`Door`, `Chest` vb.)
 
 ---
