@@ -27,7 +27,11 @@ public class PlayerController : MonoBehaviour
     {
         Move();
     }
-    
+    private void LateUpdate()
+    {
+        Move_Mouse();
+    }
+
     #region Functions
     void Move()
     {
@@ -56,5 +60,9 @@ public class PlayerController : MonoBehaviour
         m_Controller.Move(finalVelocity * Time.deltaTime);
     }
 
+    void Move_Mouse()
+    {
+        transform.eulerAngles = Vector3.up * m_PanTilt.PanAxis.Value;
+    }
     #endregion
 }
