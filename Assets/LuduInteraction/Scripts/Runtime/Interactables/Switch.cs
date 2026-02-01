@@ -1,0 +1,80 @@
+    using LuduInteraction.Runtime.Core;
+    using UnityEngine;
+    using UnityEngine.Events;
+
+    namespace LuduInteraction.Runtime.Interactables
+    {
+        /// <summary>
+        /// A switch or lever that toggles state and triggers events.
+        /// </summary>
+        public class Switch : ToggleInteractable
+        {
+            #region Fields
+
+            [Header("Animation Settings")]
+            [Tooltip("Reference to the Animator component.")]
+            [SerializeField] private Animator m_Animator;
+
+            [Tooltip("Name of the Trigger parameter in the Animator.")]
+            [SerializeField] private string m_AnimParamName = "On";
+
+            [Header("Events")]
+            [Tooltip("Invoked when the switch is toggled ON.")]
+            [SerializeField] private UnityEvent m_OnSwitchOn;
+            
+            [Tooltip("Invoked when the switch is toggled OFF.")]
+            [SerializeField] private UnityEvent m_OnSwitchOff;
+
+            [Header("Prompts")]
+            [SerializeField] private string m_OnPrompt = "Turn Off";
+            [SerializeField] private string m_OffPrompt = "Turn On";
+
+            #endregion
+
+            #region Properties
+
+            /// <inheritdoc />
+            public override string InteractionPrompt => m_IsOn ? m_OnPrompt : m_OffPrompt;
+
+            #endregion
+
+            #region Overrides
+
+            /// <inheritdoc />
+            public override void OnInteractComplete(GameObject interactor)
+            {
+                // Toggle state logic
+                HandleAnimation();
+                TriggerEvents();
+            }
+
+            #endregion
+
+            #region Private Methods
+
+            private void HandleAnimation()
+            {
+                if (m_Animator != null)
+                {
+                    bool current = m_Animator.GetBool("On");
+                    m_Animator.SetBool("On",!current);
+                }
+            }
+
+            private void TriggerEvents()
+            {
+                if (m_IsOn)
+                {
+                    Debug.Log($"Switch {gameObject.name} turned ON");
+                    m_OnSwitchOn?.Invoke();
+                }
+                else
+                {
+                    Debug.Log($"Switch {gameObject.name} turned OFF");
+                    m_OnSwitchOff?.Invoke();
+                }
+            }
+
+            #endregion
+        }
+    }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LuduInteraction.Runtime.Core;
 using UnityEngine;
@@ -36,6 +37,14 @@ namespace LuduInteraction.Runtime.Player
         
         // Cache to avoid GetComponent calls
         private Dictionary<Collider, IInteractable> m_InteractableCache = new Dictionary<Collider, IInteractable>();
+
+        #endregion
+
+        #region Events
+
+        public event Action<IInteractable> OnFocus;
+        public event Action OnLoseFocus;
+        public event Action<float> OnHoldProgress;
 
         #endregion
 
@@ -110,7 +119,7 @@ namespace LuduInteraction.Runtime.Player
             
             m_IsHolding = false;
             m_HoldTimer = 0f;
-            // TODO: Reset UI Progress
+            OnHoldProgress?.Invoke(0f);
         }
 
         #endregion
@@ -139,13 +148,14 @@ namespace LuduInteraction.Runtime.Player
             float progress = Mathf.Clamp01(m_HoldTimer / duration);
 
             m_CurrentInteractable.OnInteractHold(gameObject, progress);
-            // TODO: Update UI Progress Event(progress)
+            OnHoldProgress?.Invoke(progress);
 
             if (m_HoldTimer >= duration)
             {
                 m_CurrentInteractable.OnInteractComplete(gameObject);
                 m_IsHolding = false;
                 m_HoldTimer = 0f;
+                OnHoldProgress?.Invoke(0f);
             }
         }
 
@@ -177,6 +187,7 @@ namespace LuduInteraction.Runtime.Player
                     {
                         m_CurrentInteractable = interactable;
                         Debug.Log($"Focused: {hitCollider.gameObject.name}");
+                        OnFocus?.Invoke(m_CurrentInteractable);
                     }
                 }
                 else
@@ -202,6 +213,7 @@ namespace LuduInteraction.Runtime.Player
 
                 Debug.Log("Lost Focus");
                 m_CurrentInteractable = null;
+                OnLoseFocus?.Invoke();
             }
         }
 

@@ -34,12 +34,18 @@
 
             #region Properties
 
-            /// <inheritdoc />
+            /// <summary>
+            /// Returns a dynamic prompt based on the door's current state.
+            /// </summary>
             public override string InteractionPrompt
             {
                 get
                 {
-                    if (m_IsLocked) return m_LockedPrompt;
+                    if (m_IsLocked)
+                    {
+                        string keyName = m_RequiredKey != null ? m_RequiredKey.ItemName : "Key";
+                        return $"{m_LockedPrompt} ({keyName})";
+                    }
                     return m_IsOn ? m_OpenPrompt : m_ClosedPrompt;
                 }
             }

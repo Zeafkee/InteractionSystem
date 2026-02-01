@@ -7,10 +7,10 @@
 
 | Bilgi | Değer |
 |-------|-------|
-| Toplam prompt sayısı | 3 |
+| Toplam prompt sayısı | 6 |
 | Kullanılan araçlar | Gemini |
-| En çok yardım alınan konular | Mimari Tasarım, Input System Syntax |
-| Tahmini LLM ile kazanılan süre | 45 dk |
+| En çok yardım alınan konular | Mimari Tasarım, DOTween Syntax, Input System |
+| Tahmini LLM ile kazanılan süre | 2 saat |
 
 ---
 
@@ -73,6 +73,48 @@
 - [ ] Reddettim
 
 **Açıklama:**
-> InteractionDetector sınıfının ana mantığı (Raycast, Caching vb.) tarafımca yazıldı, sadece New Input System'in C# tarafındaki özel event syntax'ı için yardım alındı.
+> InteractionDetector sınıfının ana mantığı tarafımca yazıldı, sadece New Input System'in C# event syntax'ı için yardım alındı.
+
+---
+
+## Prompt 4: DOTween & Animator Entegrasyonu
+
+**Araç:** Gemini
+**Tarih/Saat:** 2026-02-01
+
+**Prompt:**
+> Door ve Chest için DOTween ile rotasyon animasyonu, Switch için Animator Trigger kullanımı.
+
+**Alınan Cevap (Özet):**
+> `transform.DOLocalRotateQuaternion` kullanılarak pürüzsüz kapı/sandık açılma animasyonları eklendi. Switch için `m_Animator.SetTrigger` metodu kullanıldı.
+
+**Nasıl Kullandım:**
+- [x] Direkt kullandım
+- [ ] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> Animasyon kütüphanelerinin (DOTween) doğru metod isimlerini (API) hızlıca bulmak için kullanıldı.
+
+---
+
+## Prompt 5: Inventory UI Implementation
+
+**Araç:** Gemini
+**Tarih/Saat:** 2026-02-01
+
+**Prompt:**
+> 1x6 Grid yapısında, fixed slot mantığı ile çalışan görsel envanter sistemi (InventoryUI ve InventorySlot).
+
+**Alınan Cevap (Özet):**
+> Her slotun kendi `ItemData` referansını tuttuğu ve UI güncelleme döngüsünde (loop) datayı görselleştirdiği bir yapı kuruldu. `InventorySlot` içine otomatik `Image` component bulma (Awake) eklendi.
+
+**Nasıl Kullandım:**
+- [x] Direkt kullandım
+- [ ] Adapte ettim
+- [ ] Reddettim
+
+**Açıklama:**
+> UI mantığını hızlıca kurmak için kullanıldı.
 
 ---
