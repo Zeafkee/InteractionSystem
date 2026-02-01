@@ -17,7 +17,7 @@
 
 1. Repository'yi klonlayın.
 2. Unity Hub'da projeyi açın.
-3. `Assets/LuduInteraction/Scenes/TestScene` sahnesini açın.
+3. `Assets/InteractionSystem/Scenes/TestScene` sahnesini açın.
 4. Play tuşuna basın.
 
 ## Özellikler
