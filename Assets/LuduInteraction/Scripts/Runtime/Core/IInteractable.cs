@@ -14,7 +14,7 @@ namespace LuduInteraction.Runtime.Core
 
         /// <summary>
         /// Can the object currently be interacted with?
-        /// </summary>
+        /// </summary>  
         bool CanInteract { get; }
 
         /// <summary>

@@ -22,7 +22,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool m_IsGrounded;
     [SerializeField] private bool m_IsSprinting;
 
-
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     private void Update()
     {
         Move();
@@ -35,7 +39,6 @@ public class PlayerController : MonoBehaviour
     #region Functions
     void Move()
     {
-        Debug.Log("Move Called");
         m_IsGrounded = Physics.CheckSphere(m_GroundCheck.position, m_GroundDistance, m_GroundMask);
 
         Vector2 _input = m_InputManager.GetMoveInput();

@@ -59,7 +59,7 @@ namespace LuduInteraction.Runtime.Core
         public virtual void OnInteractStart(GameObject interactor)
         {
             Debug.Log($"{interactor.name} started interacting with {gameObject.name}");
-            SetInteractableState(false); // Optionally disable further interaction until complete
+            // Removed: SetInteractableState(false); 
         }
 
         /// <inheritdoc />
@@ -72,15 +72,13 @@ namespace LuduInteraction.Runtime.Core
         public virtual void OnInteractComplete(GameObject interactor)
         {
             Debug.Log($"{interactor.name} completed interaction with {gameObject.name}");
-            SetInteractableState(true); // Re-enable interaction
+            // Stay interactable so we can toggle or interact again
         }
 
         /// <inheritdoc />
         public virtual void OnInteractCancel(GameObject interactor)
         {
-            // Optional: Reset state if needed
             Debug.Log($"{interactor.name} canceled interaction with {gameObject.name}");
-            SetInteractableState(true); // Re-enable interaction
         }
 
         #endregion
