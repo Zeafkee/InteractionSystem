@@ -18,6 +18,10 @@
             [Tooltip("Name of the Trigger parameter in the Animator.")]
             [SerializeField] private string m_AnimParamName = "On";
 
+            [Header("Logic Settings")]
+            [Tooltip("A GameObject to enable/disable when the switch is toggled.")]
+            [SerializeField] private GameObject m_TargetObject;
+
             [Header("Events")]
             [Tooltip("Invoked when the switch is toggled ON.")]
             [SerializeField] private UnityEvent m_OnSwitchOn;
@@ -90,6 +94,12 @@
 
             private void TriggerEvents()
             {
+                // Toggle target object if assigned
+                if (m_TargetObject != null)
+                {
+                    m_TargetObject.SetActive(m_IsOn);
+                }
+
                 if (m_IsOn)
                 {
                     Debug.Log($"Switch {gameObject.name} turned ON");
