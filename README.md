@@ -6,10 +6,10 @@
 
 | Bilgi | Değer |
 |-------|-------|
-| Unity Versiyonu | 2022.3.x |
+| Unity Versiyonu | 6000.2.7f2 |
 | Render Pipeline | URP |
 | Case Süresi | Tamamlandı |
-| Tamamlanma Oranı | %100 |
+| Tamamlanma Oranı | %100 (+Bonus) |
 
 ---
 
@@ -38,13 +38,20 @@
 
 ### UI & Inventory
 - **Interaction UI:** Dinamik prompt metni ve hold progress bar.
-- **Inventory System:** 1x6 grid yapısında, toplanan eşyaları gösteren görsel envanter.
+- **Inventory System:** 1x6 grid yapısında, fixed slot mantığı ile çalışan görsel envanter.
+
+### Bonus Özellikler
+- **Save/Load Sistemi:** Kapı, sandık, şalter durumu ve toplanan anahtarlar JSON formatında kaydedilir.
+- **Save Manager:** Inspector'dan save dosyasını silme ve yönetme imkanı.
+- **Interaction Highlight:** Odaklanılan nesneye outline materyali eklenir.
+- **Ses Efektleri:** Etkileşim sırasında ses çalma özelliği.
 
 ## Mimari Kararlar
 
-- **BaseInteractable:** Tüm etkileşim nesneleri için ortak soyut sınıf. Kod tekrarını önler.
+- **BaseInteractable:** Tüm etkileşim nesneleri için ortak soyut sınıf. Kod tekrarını önler. `ISaveable` ve `IInteractable` implemente eder.
 - **Event-Driven UI:** UI scriptleri, Player scriptlerinden gelen C# eventlerini dinler (`OnFocus`, `OnInventoryChanged`). Loose coupling sağlar.
 - **Collider Caching:** `InteractionDetector` her frame `GetComponent` çağırmamak için dictionary tabanlı cache kullanır.
+- **Editor Tool:** `Generate Save IDs` editör aracı ile sahnedeki tüm etkileşimli nesnelere otomatik Unique ID atanır.
 
 ## Ludu Arts Standartlarına Uyum
 

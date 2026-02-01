@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     private InputAction m_MoveAction;
     private InputAction m_InteractAction;
     private InputAction m_SprintAction;
+    private InputAction m_ClearDataAction;
 
     private void Awake()
     {
@@ -17,8 +18,7 @@ public class InputManager : MonoBehaviour
         m_MoveAction = m_PlayerInput.actions["Move"];
         m_InteractAction = m_PlayerInput.actions["Interact"];
         m_SprintAction = m_PlayerInput.actions["Sprint"];
-
-
+        m_ClearDataAction = m_PlayerInput.actions["ClearData"];
     }
     #region Methods
     public Vector2 GetMoveInput()
@@ -29,9 +29,9 @@ public class InputManager : MonoBehaviour
     {
         return m_InteractAction.triggered;
     }
-    public Vector2 GetMouseScrollInput()
+    public bool GetClearDataInput()
     {
-        return Mouse.current.scroll.ReadValue();
+        return m_ClearDataAction != null && m_ClearDataAction.triggered;
     }
     public bool GetSprintInput()
     {

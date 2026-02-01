@@ -57,14 +57,34 @@
 
             #endregion
 
-            #region Private Methods
+            #region ISaveable Implementation
+
+        public override void LoadState(bool state)
+        {
+            base.LoadState(state);
+            
+            // Snap visual state
+            if (m_Animator != null)
+            {
+                m_Animator.SetBool(m_AnimParamName, m_IsOn);
+            }
+        }
+
+        public override bool SaveState()
+        {
+            return m_IsOn;
+        }
+
+        #endregion
+
+        #region Private Methods
 
             private void HandleAnimation()
             {
                 if (m_Animator != null)
                 {
-                    bool current = m_Animator.GetBool("On");
-                    m_Animator.SetBool("On",!current);
+                    // Use SetBool for On/Off states based on the Toggle state
+                    m_Animator.SetBool(m_AnimParamName, m_IsOn);
                 }
             }
 

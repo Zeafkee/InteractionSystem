@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LuduInteraction.Runtime.Core
@@ -6,9 +7,12 @@ namespace LuduInteraction.Runtime.Core
     /// Base abstract class for all interactable objects.
     /// Implements common functionality for IInteractable.
     /// </summary>
-    public abstract class BaseInteractable : MonoBehaviour, IInteractable
+    public abstract class BaseInteractable : MonoBehaviour, IInteractable, ISaveable
     {
         #region Fields
+
+        [Tooltip("Unique ID for saving state.")]
+        [SerializeField] private string m_SaveID;
 
         [Tooltip("Text to display when the player looks at this object.")]
         [SerializeField] private string m_InteractionPrompt = "Interact";
@@ -28,6 +32,8 @@ namespace LuduInteraction.Runtime.Core
 
         #region Properties
 
+        public string SaveID => m_SaveID;
+
         /// <inheritdoc />
         public virtual string InteractionPrompt => m_InteractionPrompt;
 
@@ -39,7 +45,33 @@ namespace LuduInteraction.Runtime.Core
 
         #endregion
 
+        #region Unity Methods
+
+        protected virtual void Start()
+        {
+            if (!string.IsNullOrEmpty(m_SaveID) && SaveManager.Instance != null)
+            {
+                Debug.Log($"[{gameObject.name}] Loading state for ID: {m_SaveID}");
+                bool savedState = SaveManager.Instance.GetBool(m_SaveID);
+                LoadState(savedState);
+            }
+            else if (string.IsNullOrEmpty(m_SaveID))
+            {
+                Debug.LogWarning($"[{gameObject.name}] SaveID is empty! State will not be saved.");
+            }
+        }
+
+        #endregion
+
         #region Public Methods
+
+        /// <summary>
+        /// Generates a new GUID for this object.
+        /// </summary>
+        public void GenerateSaveID()
+        {
+            m_SaveID = System.Guid.NewGuid().ToString();
+        }
 
         /// <summary>
         /// Sets the interaction prompt text dynamically.
@@ -97,7 +129,6 @@ namespace LuduInteraction.Runtime.Core
         public virtual void OnInteractStart(GameObject interactor)
         {
             Debug.Log($"{interactor.name} started interacting with {gameObject.name}");
-            // Removed: SetInteractableState(false); 
         }
 
         /// <inheritdoc />
@@ -107,16 +138,35 @@ namespace LuduInteraction.Runtime.Core
         }
 
         /// <inheritdoc />
-        public virtual void OnInteractComplete(GameObject interactor)
-        {
-            Debug.Log($"{interactor.name} completed interaction with {gameObject.name}");
-            // Stay interactable so we can toggle or interact again
-        }
+        public abstract void OnInteractComplete(GameObject interactor);
 
         /// <inheritdoc />
         public virtual void OnInteractCancel(GameObject interactor)
         {
             Debug.Log($"{interactor.name} canceled interaction with {gameObject.name}");
+        }
+
+        #endregion
+
+        #region ISaveable Implementation
+
+        public virtual void LoadState(bool state)
+        {
+            // Override in subclasses
+        }
+
+        public virtual bool SaveState()
+        {
+            // Override in subclasses to return current state
+            return false;
+        }
+
+        protected void Save()
+        {
+            if (!string.IsNullOrEmpty(m_SaveID) && SaveManager.Instance != null)
+            {
+                SaveManager.Instance.SetState(m_SaveID, SaveState());
+            }
         }
 
         #endregion

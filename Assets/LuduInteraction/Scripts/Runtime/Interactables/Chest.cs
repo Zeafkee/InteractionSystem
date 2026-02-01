@@ -55,11 +55,32 @@ namespace LuduInteraction.Runtime.Interactables
 
         #endregion
 
+        #region ISaveable Implementation
+
+        public override void LoadState(bool state)
+        {
+            m_IsOpen = state;
+            if (m_IsOpen && m_LidTransform != null)
+            {
+                // Snap to open
+                m_LidTransform.localRotation = Quaternion.Euler(m_OpenedRotationEuler);
+            }
+        }
+
+        public override bool SaveState()
+        {
+            return m_IsOpen;
+        }
+
+        #endregion
+
         #region Private Methods
 
         private void OpenChest(GameObject interactor)
         {
             m_IsOpen = true;
+            Save(); // Save state
+
             Debug.Log("Chest Opened!");
 
             // 1. Animation (DOTween)
@@ -79,14 +100,13 @@ namespace LuduInteraction.Runtime.Interactables
             // 2. Give Item
             if (m_StoredItem != null)
             {
-                SimpleInventory inventory = interactor.GetComponent<SimpleInventory>();
-                if (inventory != null)
+                if (SimpleInventory.Instance != null)
                 {
-                    inventory.AddItem(m_StoredItem);
+                    SimpleInventory.Instance.AddItem(m_StoredItem);
                 }
                 else
                 {
-                    Debug.LogWarning("Interactor missing SimpleInventory.");
+                    Debug.LogWarning("SimpleInventory Instance is null.");
                 }
             }
 

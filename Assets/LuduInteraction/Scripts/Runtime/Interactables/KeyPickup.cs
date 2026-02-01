@@ -24,26 +24,38 @@ namespace LuduInteraction.Runtime.Interactables
 
         #endregion
 
+        #region Unity Methods
+
+        protected override void Start()
+        {
+            base.Start(); // Load ID logic
+
+            // Check if already collected
+            if (m_KeyItem != null && SimpleInventory.Instance != null)
+            {
+                if (SimpleInventory.Instance.HasItem(m_KeyItem.ItemID))
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+        }
+
+        #endregion
+
         #region Overrides
 
         public override void OnInteractComplete(GameObject interactor)
         {
-            base.OnInteractComplete(interactor);
-
-            if (m_KeyItem != null)
+            if (m_KeyItem != null && SimpleInventory.Instance != null)
             {
-                var inventory = interactor.GetComponent<SimpleInventory>();
-                if (inventory != null)
-                {
-                    inventory.AddItem(m_KeyItem);
-                    
-                    // Disable the object to simulate "picking it up"
-                    gameObject.SetActive(false);
-                }
-                else
-                {
-                    Debug.LogWarning("Interactor missing SimpleInventory component.");
-                }
+                SimpleInventory.Instance.AddItem(m_KeyItem);
+                
+                // Disable the object to simulate "picking it up"
+                gameObject.SetActive(false);
+            }
+            else if (SimpleInventory.Instance == null)
+            {
+                Debug.LogWarning("SimpleInventory Instance is null!");
             }
         }
 

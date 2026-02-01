@@ -36,19 +36,27 @@
             
                     #region Properties
             
-                    /// <inheritdoc />
-                    public override string InteractionPrompt
+            /// <summary>
+            /// Returns a dynamic prompt based on the door's current state.
+            /// </summary>
+            public override string InteractionPrompt
+            {
+                get
+                {
+                    if (m_IsLocked)
                     {
-                        get
+                        // Check if we have the key right now to update prompt
+                        if (SimpleInventory.Instance != null && m_RequiredKey != null && SimpleInventory.Instance.HasItem(m_RequiredKey.ItemID))
                         {
-                            if (m_IsLocked)
-                            {
-                                string keyName = m_RequiredKey != null ? m_RequiredKey.ItemName : "Key";
-                                return $"{m_LockedPrompt} ({keyName})";
-                            }
-                            return m_IsOn ? m_OpenPrompt : m_ClosedPrompt;
+                            return "Unlock Door";
                         }
+
+                        string keyName = m_RequiredKey != null ? m_RequiredKey.ItemName : "Key";
+                        return $"{m_LockedPrompt} ({keyName})";
                     }
+                    return m_IsOn ? m_OpenPrompt : m_ClosedPrompt;
+                }
+            }
             
                     #endregion
             
@@ -113,16 +121,36 @@
             
                     #endregion
 
-            #region Private Methods
+            #region ISaveable Implementation
+
+        public override void LoadState(bool state)
+        {
+            base.LoadState(state); // Sets m_IsOn
+            
+            // Snap visual rotation immediately
+            if (m_DoorTransform != null)
+            {
+                m_DoorTransform.localRotation = m_IsOn ? m_OpenedQuaternion : m_ClosedQuaternion;
+            }
+        }
+
+        public override bool SaveState()
+        {
+            return m_IsOn;
+        }
+
+        #endregion
+
+        #region Private Methods
 
             private bool CheckForKey(GameObject interactor)
             {
                 if (m_RequiredKey == null) return true;
 
-                SimpleInventory inventory = interactor.GetComponent<SimpleInventory>();
-                if (inventory != null)
+                if (SimpleInventory.Instance != null)
                 {
-                    return inventory.HasItem(m_RequiredKey);
+                    // Use ID check instead of reference check for better save/load compatibility
+                    return SimpleInventory.Instance.HasItem(m_RequiredKey.ItemID);
                 }
 
                 return false;

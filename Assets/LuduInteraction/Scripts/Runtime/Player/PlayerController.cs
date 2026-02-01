@@ -30,6 +30,14 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Move();
+        
+        if (m_InputManager.GetClearDataInput())
+        {
+            if (LuduInteraction.Runtime.Core.SaveManager.Instance != null)
+            {
+                LuduInteraction.Runtime.Core.SaveManager.Instance.ClearSave();
+            }
+        }
     }
     private void LateUpdate()
     {

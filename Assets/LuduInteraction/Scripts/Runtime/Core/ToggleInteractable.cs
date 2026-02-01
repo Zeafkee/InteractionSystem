@@ -37,6 +37,24 @@ namespace LuduInteraction.Runtime.Core
             m_IsOn = !m_IsOn;
             
             OnInteractComplete(interactor);
+            
+            // Save state
+            Save();
+        }
+
+        #endregion
+
+        #region ISaveable Implementation
+
+        public override void LoadState(bool state)
+        {
+            m_IsOn = state;
+            // Visuals should be updated by concrete classes (Door/Switch) in their Awake/Start based on m_IsOn
+        }
+
+        public override bool SaveState()
+        {
+            return m_IsOn;
         }
 
         #endregion

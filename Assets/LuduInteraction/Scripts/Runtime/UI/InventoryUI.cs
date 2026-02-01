@@ -25,9 +25,33 @@ namespace LuduInteraction.Runtime.UI
 
         private void OnEnable()
         {
+            if (m_Inventory == null)
+            {
+                m_Inventory = SimpleInventory.Instance;
+            }
+
             if (m_Inventory != null)
             {
                 m_Inventory.OnInventoryChanged.AddListener(UpdateUI);
+                UpdateUI();
+            }
+        }
+
+        private void Start()
+        {
+            // Retry logic in case OnEnable ran before Inventory was ready
+            if (m_Inventory == null)
+            {
+                m_Inventory = SimpleInventory.Instance;
+                if (m_Inventory != null)
+                {
+                    m_Inventory.OnInventoryChanged.AddListener(UpdateUI);
+                    UpdateUI();
+                }
+            }
+            else
+            {
+                // Force an update in Start just to be sure
                 UpdateUI();
             }
         }
@@ -49,6 +73,7 @@ namespace LuduInteraction.Runtime.UI
             if (m_Inventory == null || m_Slots.Count == 0) return;
 
             List<ItemData> items = m_Inventory.GetItems();
+            Debug.Log($"[InventoryUI] Updating UI with {items.Count} items.");
 
             // Loop through all UI slots
             for (int i = 0; i < m_Slots.Count; i++)

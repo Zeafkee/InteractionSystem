@@ -7,10 +7,10 @@
 
 | Bilgi | Değer |
 |-------|-------|
-| Toplam prompt sayısı | 6 |
+| Toplam prompt sayısı | 4 |
 | Kullanılan araçlar | Gemini |
-| En çok yardım alınan konular | Mimari Tasarım, DOTween Syntax, Input System |
-| Tahmini LLM ile kazanılan süre | 2 saat |
+| En çok yardım alınan konular | Mimari Tasarım, Save/Load Logic, XML Docs & Naming Conventions |
+| Tahmini LLM ile kazanılan süre | 4 saat |
 
 ---
 
@@ -41,10 +41,10 @@
 **Tarih/Saat:** 2026-01-31
 
 **Prompt:**
-> "I want to code myself on creating interfaces, classes, interactions etc. ... just give me plain classes and I will fill them." (Logic separation into Base Classes requested)
+> "I want to code myself on creating interfaces, classes, interactions etc. ... just give me plain classes and I will fill them." (Logic separation into Base Classes requested). Ayrıca Ludu Arts standartlarına (m_ prefix, XML summary vb.) uygun isimlendirmeler istendi.
 
 **Alınan Cevap (Özet):**
-> IInteractable arayüzü ve InteractionType enum'u oluşturuldu. Ardından BaseInteractable soyut sınıfı ve ondan türeyen Instant, Hold, Toggle base sınıfları hiyerarşik yapıda hazırlandı.
+> IInteractable arayüzü ve InteractionType enum'u oluşturuldu. Ardından BaseInteractable soyut sınıfı ve ondan türeyen Instant, Hold, Toggle base sınıfları hiyerarşik yapıda hazırlandı. Tüm kodlar istenilen XML dokümantasyon ve isimlendirme kurallarına göre düzenlendi.
 
 **Nasıl Kullandım:**
 - [ ] Direkt kullandım
@@ -52,7 +52,7 @@
 - [ ] Reddettim
 
 **Açıklama:**
-> Gemini'nin önerdiği interface ve abstract class yapısı kullanıldı ancak BaseInteractable üzerindeki logic (debug logları vb.) tarafımca değiştirilerek projeye uyarlandı.
+> Gemini'nin önerdiği interface ve abstract class yapısı kullanıldı. Özellikle Ludu Arts standartlarına uygun `m_` prefix kullanımı ve XML summary gibi detayların hızlıca uygulanmasında LLM desteğinden yararlanıldı. Logic kısımları tarafımca uyarlandı.
 
 ---
 
@@ -77,16 +77,16 @@
 
 ---
 
-## Prompt 4: DOTween & Animator Entegrasyonu
+## Prompt 4: Save/Load System, Editor Tool ve Envanter Hatası
 
 **Araç:** Gemini
 **Tarih/Saat:** 2026-02-01
 
 **Prompt:**
-> Door ve Chest için DOTween ile rotasyon animasyonu, Switch için Animator Trigger kullanımı.
+> Save/Load altyapısının kurulması, unique ID atayan editör aracı yazılması ve inventory'deki anahtarların yüklenmemesi sorununun çözümü.
 
 **Alınan Cevap (Özet):**
-> `transform.DOLocalRotateQuaternion` kullanılarak pürüzsüz kapı/sandık açılma animasyonları eklendi. Switch için `m_Animator.SetTrigger` metodu kullanıldı.
+> `ISaveable` arayüzü ve JSON serialization yapıldı. `SaveIDEditorWindow` aracı ile sahnedeki objelere ID atandı. Envanter yükleme sorunu için; `SimpleInventory` yükleme mantığı `Resources.LoadAll` kullanacak şekilde güncellendi ve anahtar kontrolü `ItemID` (string) üzerinden yapılarak referans hatası giderildi.
 
 **Nasıl Kullandım:**
 - [x] Direkt kullandım
@@ -94,27 +94,6 @@
 - [ ] Reddettim
 
 **Açıklama:**
-> Animasyon kütüphanelerinin (DOTween) doğru metod isimlerini (API) hızlıca bulmak için kullanıldı.
-
----
-
-## Prompt 5: Inventory UI Implementation
-
-**Araç:** Gemini
-**Tarih/Saat:** 2026-02-01
-
-**Prompt:**
-> 1x6 Grid yapısında, fixed slot mantığı ile çalışan görsel envanter sistemi (InventoryUI ve InventorySlot).
-
-**Alınan Cevap (Özet):**
-> Her slotun kendi `ItemData` referansını tuttuğu ve UI güncelleme döngüsünde (loop) datayı görselleştirdiği bir yapı kuruldu. `InventorySlot` içine otomatik `Image` component bulma (Awake) eklendi.
-
-**Nasıl Kullandım:**
-- [x] Direkt kullandım
-- [ ] Adapte ettim
-- [ ] Reddettim
-
-**Açıklama:**
-> UI mantığını hızlıca kurmak için kullanıldı.
+> Karmaşık JSON işlemleri ve Editor scripti hazır alındı. Envanterdeki referans kaybolma bug'ı `Resources` folder yapısı ve ID check mantığı ile çözüldü.
 
 ---
