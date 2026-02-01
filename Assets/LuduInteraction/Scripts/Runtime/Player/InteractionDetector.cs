@@ -195,8 +195,15 @@ namespace LuduInteraction.Runtime.Player
                 {
                     if (m_CurrentInteractable != interactable)
                     {
+                        // Remove highlight from previous
+                        if (m_CurrentInteractable is BaseInteractable prevBase) prevBase.SetHighlight(false);
+
                         m_CurrentInteractable = interactable;
                         Debug.Log($"Focused: {hitCollider.gameObject.name}");
+                        
+                        // Add highlight to new
+                        if (m_CurrentInteractable is BaseInteractable newBase) newBase.SetHighlight(true);
+
                         OnFocus?.Invoke(m_CurrentInteractable);
                     }
                 }
@@ -220,6 +227,9 @@ namespace LuduInteraction.Runtime.Player
                 {
                     OnInteractCanceled(default);
                 }
+
+                // Remove highlight
+                if (m_CurrentInteractable is BaseInteractable baseInt) baseInt.SetHighlight(false);
 
                 Debug.Log("Lost Focus");
                 m_CurrentInteractable = null;

@@ -106,4 +106,5 @@ MonoBehaviour:
   m_IsInteractable: 1
   m_AudioSource: {fileID: 0}
   m_InteractionSound: {fileID: 0}
+  m_OutlineMaterial: {fileID: 2100000, guid: 20b15e38dcfaa4840aa388535e72e3bd, type: 2}
   m_KeyItem: {fileID: 0}

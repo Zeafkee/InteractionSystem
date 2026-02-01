@@ -20,6 +20,10 @@ namespace LuduInteraction.Runtime.Core
         [SerializeField] protected AudioSource m_AudioSource;
         [SerializeField] protected AudioClip m_InteractionSound;
 
+        [Header("Visuals")]
+        [Tooltip("Material to apply for outlining when focused.")]
+        [SerializeField] private Material m_OutlineMaterial;
+
         #endregion
 
         #region Properties
@@ -53,6 +57,36 @@ namespace LuduInteraction.Runtime.Core
         public void SetInteractableState(bool state)
         {
             m_IsInteractable = state;
+        }
+
+        /// <summary>
+        /// Toggles the outline material on all child renderers.
+        /// </summary>
+        public void SetHighlight(bool active)
+        {
+            if (m_OutlineMaterial == null) return;
+
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            foreach (var rend in renderers)
+            {
+                var mats = new System.Collections.Generic.List<Material>(rend.sharedMaterials);
+                
+                if (active)
+                {
+                    // Add if not present
+                    if (!mats.Contains(m_OutlineMaterial))
+                    {
+                        mats.Add(m_OutlineMaterial);
+                    }
+                }
+                else
+                {
+                    // Remove if present
+                    mats.Remove(m_OutlineMaterial);
+                }
+
+                rend.materials = mats.ToArray();
+            }
         }
 
         #endregion

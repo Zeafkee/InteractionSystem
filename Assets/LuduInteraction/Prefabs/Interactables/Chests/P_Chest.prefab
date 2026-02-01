@@ -52,6 +52,7 @@ MonoBehaviour:
   m_IsInteractable: 1
   m_AudioSource: {fileID: 1355746860458555303}
   m_InteractionSound: {fileID: 8300000, guid: 44d4eb6144fac644ead6caa9c4847c09, type: 3}
+  m_OutlineMaterial: {fileID: 2100000, guid: 20b15e38dcfaa4840aa388535e72e3bd, type: 2}
   m_HoldDuration: 2
   m_StoredItem: {fileID: 11400000, guid: 7caca44247c695c4ea3ab4ce3d55fd63, type: 2}
   m_IsOpen: 0

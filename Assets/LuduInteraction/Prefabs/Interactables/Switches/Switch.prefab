@@ -221,6 +221,7 @@ MonoBehaviour:
   m_IsInteractable: 1
   m_AudioSource: {fileID: 6067814335623909357}
   m_InteractionSound: {fileID: 8300000, guid: 644f23f299f511747ad4ca9ad57e4f2e, type: 3}
+  m_OutlineMaterial: {fileID: 2100000, guid: 20b15e38dcfaa4840aa388535e72e3bd, type: 2}
   m_IsOn: 0
   m_Animator: {fileID: 8775279449189634869}
   m_AnimParamName: On
